@@ -1,0 +1,220 @@
+*,*::before,*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+:root {
+  --background-color: #1f3038;
+  --navbar-background-color: #111d24;
+  --logo-color: #63f542;
+  --media-post-width: 37vh;
+  --post-background-color: #fff;
+  --new-post-embedder-height: 76vh;
+  --dialog-background: #10101c;
+}
+body {
+  background: var(--background-color);
+  overflow: clip;
+}
+.content-body {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+.navigation-menu {
+  position: fixed;
+  left: 0;
+  height: 100vh;
+  text-align: center;
+  max-width: 8%;
+  border-right: 0.2px solid #6d8591;
+  box-shadow: 0px 0px 4px 0.1px #6d8591;
+  background: var(--navbar-background-color);
+  padding: 10px;
+  margin-right: 20px;
+}
+.navigation-menu .nav-bar {
+  display: grid;
+  font-size: 3.3rem;
+  margin: 38px 4px;
+  grid-template-rows: repeat(6, 1fr);
+  height: 90vh;
+}
+.nav-bar .app-icon {
+  text-shadow: 0px 1px 7px var(--logo-color);
+}
+.nav-bar .nav-icon a,.add-post-btn {
+  color: #fff;
+}
+.nav-bar .nav-icon a:hover,.add-post-btn:hover {
+  cursor: pointer;
+  color: #ccc;
+}
+.media-body {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100vh;
+  margin-left: 8vh;
+}
+.media-body .posts-section {
+  display: grid;
+  margin: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 0px;
+  width: 92%;
+  height: 93vh;
+  overflow-x: clip;
+  overflow-y: scroll;
+  padding: 4vh;
+}
+.posts-section article {
+  padding: 2vh;
+  margin: 10px;
+  width: var(--media-post-width);
+  aspect-ratio: 1.28;
+  background:var(--post-background-color);
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  grid-template-rows: repeat(5, 1fr);
+}
+.posts-section article .post-image {
+  display: grid;
+  place-items: center;
+  margin: 4px;
+  user-select: none;
+}
+/*
+.post-image iframe {
+  border: none;
+}*/
+.posts-section article div {
+  width: 99%;
+  padding: 2px;
+  color: #000;
+}
+.posts-section article .post-title-container {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 2.25rem;
+  font-weight: bold;
+  user-select: none;
+}
+.posts-section article .post-description-container {
+  font-weight: 600;
+  color: #333;
+  font-size: 1.25rem;
+}
+.posts-section article .todo-utilities {
+  display: flex;
+  flex-direction: row;
+  color: #000;
+  justify-content: space-evenly;
+  margin: 3px;
+  font-size: 2.4rem;
+}
+.todo-utilities .todo-for-post a {
+  color: #000;
+}
+.posts-section .no-posts-yet-box {
+  display: grid;
+  place-items: center;
+  height: 30vh;
+  color: #fff;
+}
+.no-posts-yet-box .funny-logo i {
+  font-size: 9rem;
+}
+.no-posts-yet-box .funny-logo header {
+  font-size: 1.4rem;
+}
+
+/* dialog */
+dialog {
+  position: fixed;
+  transform: translate(-50%,-50%);
+  border: none;
+  border-radius: 6px;
+}
+.new-post-embedder {
+  top: 48%;
+  left: 56%;
+  padding: 4px;
+  height: var(--new-post-embedder-height);
+  background:var(--dialog-background);
+  aspect-ratio: 0.8;
+  overflow-x: clip;
+  overflow-y: scroll;
+  box-shadow: 0px 0px 24px 0.8px #ccc;
+}
+.new-post-embedder .dialog-closer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 9px;
+  font-size: 2.3rem;
+  color: #fa3c52;
+  font-weight: bold;
+}
+.new-post-embedder .form-input {
+  display: grid;
+  place-items: center;
+  margin: 8px;
+  width: 85%;
+}
+.new-post-embedder .form-input .form-input {
+  display: grid;
+  place-items: center;
+  width: 96%;
+}
+.form-input .new-post-form div {
+  display: grid;
+  place-items: center;
+  margin: 6px;
+} 
+.form-input .new-post-form .image-viewer {
+  display: none; 
+  place-items: center;
+}
+.new-post-form .image-viewer iframe {
+  border: none;
+}
+.new-post-form 
+#form-fields input[type='text'],textarea  {
+  --input-Height: 40px;
+  height: var(--input-Height);
+  width:98%;
+  padding: 4px;
+  background: transparent;
+  border: 1.8px solid #1184c2;
+  color: #ccc;
+  font-weight: bold;
+  border-radius: 4px;
+  font-size: 1.4rem;
+}
+textarea {
+  resize: none;
+  height: 24vh;
+  padding: 6px;
+}
+input:focus,textarea:focus {
+  outline: none;
+}
+.new-post-form #form-fields input[type='datetime-local']  {
+  opacity: 0;
+}
+.new-post-form #form-fields input[type='submit']  {
+  height: 40px;
+  aspect-ratio: 4;
+  color: #000;
+  background: #1995fa;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+}
+.new-post-form #form-fields input[type='submit']:hover {
+  cursor: pointer;
+  background: #137acf;
+}

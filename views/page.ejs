@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>page</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <main class="content-body">
+    <!--navigation-bar-->
+    <main class="navigation-menu">
+      <nav class="nav-bar">
+        <div class="app-icon">
+          <i class="bi bi-feather" style="color:var(--logo-color);"></i>
+        </div>
+        <div class="nav-icon">
+          <a href="/">
+            <i class="bi bi-file-earmark-image"></i>
+          </a>
+        </div>
+        <div class="nav-icon">
+          <p class="add-post-btn">
+            <i class="bi bi-plus-square"></i>
+          </p>
+        </div>
+        <div class="nav-icon">
+          <a href="/albums">
+            <i class="bi bi-journal-album"></i>
+          </a>
+        </div>
+        <div class="nav-icon">
+          <a href="/starred-posts">
+            <i class="bi bi-star"></i>
+          </a>
+        </div>
+      </nav>
+    </main> 
+    <!--media-body--->
+    <main class="media-body">
+      <main class="posts-section">
+      <% if (media_data.length !== 0)  { %>
+      <%  media_data.forEach(({post_id,post_title,post_image,post_description}) => {   %>
+           <article class="photo-post">
+             <div class="post-image">
+               <!--convert an Array buffer to a Primitive array and render data chunks-->
+               <iframe src="<%= Array.from(post_image).map((ele) => {
+                  return String.fromCharCode(ele)
+                }).join("") %>" loading="lazy" width="300px" height="230px"></iframe>
+             </div>
+             <div class="post-title-container">
+               <header style="user-select:none;" class="post-title"><%= post_title %></header>
+             </div>
+             <div class="post-description-container">
+               <p style="user-select:none;" class="post-description"><%= post_description.length > 80? post_description.slice(0, 80)+"...":post_description %></p>
+             </div>
+             <div class="todo-utilities">
+               <div class="todo-for-post">
+                 <a href="/view-post/<%=post_id%>"><i class="bi bi-eye"></i></a>
+               </div>
+               <div class="todo-for-post">
+                 <form class="add-to-favourite-form" action="add-to-favourites" method="post">
+                   <input style="width:0px;height:0px;opacity:0;cursor:default;" name="<%= post_id%>" readonly/>
+                   <i id="add-to-favourite-btn" class="bi bi-star" onclick="addToFavouritePost()"></i>
+                 </form>
+                 </div>
+                 <div class="delete-post">
+                   <a style="color:black;" href="/delete-post/<%= post_id %>">
+                     <i class="bi bi-trash"></i>
+                   </a> 
+                </div>
+                 <div class="save-to-album">
+                   <i class="bi bi-journal-album"></i>
+                 </div>
+               </div>
+             </article>
+      <%  });      %>
+      <% } else {  %>  
+            <div class="no-posts-yet-box">
+              <div class="funny-logo">
+                <i class="bi bi-emoji-smile-upside-down-fill"></i><br>
+                <header>No posts yet!</header>
+              </div>
+            </div>
+      <% } %>
+      </main>
+    </main>
+  </main>
+  <dialog class="new-post-embedder">
+    <div class="dialog-closer">
+      <i id="new-post-canceller" class="bi bi-x-circle"></i>
+    </div>
+    <div class="form-input">
+      <form class="new-post-form" action="/new-post" method="post">
+        <div class="image-viewer">
+          <iframe class="post-image-viewer" height="300px" width="460px"></iframe>
+        </div>
+        <div class="image-input-element">
+          <input class="new-post-input" type="file" accept="image/png,image/jpeg" 
+          name="post_image" required/>
+          <input style="cursor:default;opacity:0;" name="image_buffer" type="text" class="image-buffer" readonly>
+        </div>
+        <div id="form-fields" class="post-title">
+          <input type="text" name="post_title" maxlength="70" placeholder="enter title.." required>
+        </div>
+        <div id="form-fields" class="post-description">
+          <textarea maxlength="3000" name="post_description" placeholder="enter description" required></textarea>
+        </div>
+        <div id="form-fields" class="current-date">
+          <input class="date-now" type="datetime-local" name="post_date" readonly/> 
+        </div>
+        <div id="form-fields" class="submit-button">
+          <input class="new-submit-button" type="submit" value="post"/>
+        </div>
+      </form>
+    </div>
+  </dialog>
+  <dialog class="post-delete-confirmation"></dialog>
+  <script type="text/javascript">
+    <!--script-->
+    const addToFavouriteForm = document.querySelector(".add-to-favourite-form");
+    const addToFavBtn = document.querySelector("#add-to-favourite-btn");
+    const createNewPostBtn = document.querySelector(".add-post-btn");
+    const newPostDialog = document.querySelector(".new-post-embedder");
+    const imageInputNew = document.querySelector(".new-post-input");
+    const cancelNewPostBtn = document.querySelector("#new-post-canceller");
+    const postImageViewer = document.querySelector(".post-image-viewer");
+    const newPostForm = document.querySelector(".new-post-form");
+
+    function dateFormatted()  {
+      const curr = new Date();
+      let [month,day,hour,minutes,seconds] = [
+        (curr.getMonth()+1) < 10?`${curr.getMonth()}`:`${curr.getMonth()+1}`,
+        curr.getDate() < 10?`0${curr.getDate()}`:`${curr.getDate()}`,
+        curr.getHours() < 10?`0${curr.getHours()}`:`${curr.getHours()}`,
+        curr.getMinutes() < 10? `0${curr.getMinutes()}`:`${curr.getMinutes()}`,
+        curr.getSeconds() < 10? `0${curr.getSeconds()}`:`${curr.getSeconds()}`
+      ];
+      return `${curr.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+    }
+    
+    function addToFavouritePost()  {
+      if (addToFavBtn !== null)  {
+        addToFavBtn.className = 'bi bi-star-fill';
+        addToFavBtn.style.color = '#fa3c52';
+        addToFavouriteForm.submit();
+      }
+    } 
+
+    newPostForm.onsubmit = function()  {
+      setTimeout(function()  {
+        newPostDialog.close();
+        location.reload();
+      }, 300);
+    }
+
+    function updateCursorDialogClose()  {
+      cancelNewPostBtn.style.cursor = 'pointer';
+      cancelNewPostBtn.className = 'bi bi-x-circle-fill';
+      setTimeout(function() {
+        cancelNewPostBtn.className = 'bi bi-x-circle';
+      }, 800);
+    }
+
+    function fetchImageFile(event)  {
+      const reader = new FileReader();
+      const file = Array.from(imageInputNew.files).at(0);
+      document.querySelector(".image-viewer").style.display = 'grid';
+      reader.addEventListener("load", function() {
+        postImageViewer.src = reader.result;
+        document.querySelector(".image-buffer").value = reader.result;
+      }, false);
+      if (file) 
+        reader.readAsDataURL(file);
+    }
+
+    function newPostFormOpen()  {
+      newPostDialog.showModal();
+    }
+
+    function confirmCloseDialog()   {
+      if (window.confirm("are you sure you want to close? The post will be discarded"))  {
+        newPostDialog.close();
+      }
+    }
+
+    setInterval(function() {
+      document.querySelector(".date-now").value = dateFormatted();   
+    }, 1000);
+    
+    cancelNewPostBtn.onmouseover = updateCursorDialogClose;
+    imageInputNew.onchange = fetchImageFile;
+    createNewPostBtn.onclick = newPostFormOpen;
+    cancelNewPostBtn.onclick = confirmCloseDialog;
+  </script>
+</body>
+</html>
