@@ -87,10 +87,9 @@ body {
   margin: 4px;
   user-select: none;
 }
-/*
 .post-image iframe {
   border: none;
-}*/
+}
 .posts-section article div {
   width: 99%;
   padding: 2px;
@@ -217,4 +216,35 @@ input:focus,textarea:focus {
 .new-post-form #form-fields input[type='submit']:hover {
   cursor: pointer;
   background: #137acf;
+}
+.content-body .post-content {
+  display: grid;
+  place-items: center;
+  width: 95%;
+}
+.post-content .the-post {
+  width: 80%;
+  height: 85vh;
+  text-align: center;
+  overflow-x: clip;
+  overflow-y: scroll;
+}
+.the-post .header {
+  color: #fff;
+  font-size: 2.7rem;
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+}
+.header p {
+  font-size: 1.4rem;
+  color: #ccc;
+}
+.the-post div {
+  margin: 6px;
+}
+.the-post .description p {
+  color: #fff;
+  text-align: justify;
+  font-size: 1.5rem;
 }

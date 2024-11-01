@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>post</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <main class="content-body">
+    <main class="navigation-menu">
+      <nav class="nav-bar">
+        <div class="app-icon">
+          <i class="bi bi-feather" style="color:var(--logo-color);"></i>
+        </div>
+        <div class="nav-icon">
+          <a href="/">
+            <i class="bi bi-file-earmark-image"></i>
+          </a>
+        </div>
+        <div class="nav-icon">
+          <p class="add-post-btn">
+            <i class="bi bi-plus-square"></i>
+          </p>
+        </div>
+        <div class="nav-icon">
+          <a href="/albums">
+            <i class="bi bi-journal-album"></i>
+          </a>
+        </div>
+        <div class="nav-icon">
+          <a href="/starred-posts">
+            <i class="bi bi-star"></i>
+          </a>
+        </div>
+      </nav>
+    </main> 
+    <main class="post-content">
+      <div class="the-post">
+        <div class="header">
+          <h2><%= post_title %></h2>
+          <p>posted <%= time_difference %></p>
+        </div>
+        <div class="post-image">
+          <iframe src="<%= imageBuffer %>" height="360px" width="360px"></iframe>
+        </div>
+        <div class="description" style="width: 50%;">
+          <p class="post-description"><%= post_description %></p>
+        </div>
+      </div>
+    </main>
+  </main>
+</body>
+</html>
